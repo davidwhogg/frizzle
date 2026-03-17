@@ -408,7 +408,7 @@ At a rate of 0.01 (one percent), sets of three adjacent pixels were randomly and
 According to these rules we made two input data sets.
 One is poorly sampled, with $M=171$ spectral pixels in the input data separated by $2/R$ in $x$ (natural logarithm of wavelength), and signal-to-noise per pixel of 18 in the continuum.
 The other is well sampled, with $M=340$ spectral pixels in the input data separated by $1/R$ in $x$, and signal-to-noise per pixel of 12 in the continuum.
-In each case there are $N=8$ epochs.
+In each case \modified{the noise is heteroskedastic, and} there are $N=8$ epochs.
 The two complete data sets are shown in \figurename~\ref{fig:data1} and \figurename~\ref{fig:data2}.
 \begin{figure}[t!]
     \begin{mdframed}\begin{center}
@@ -444,7 +444,7 @@ We didn't employ any data weighting; we treated every epoch as identical in term
 The combined spectrum resulting from the forward model described in \secref{sec:method} is shown in \figurename~\ref{fig:forward}.
 It is compared to the true spectral expectation model that was used to generate the data.
 Also shown in \figurename~\ref{fig:forward} is the residuals, \name{} minus truth.
-The residuals look stationary, approximately Gaussian, and uncorrelated (more on this below).
+The residuals look stationary and uncorrelated (more on this below).
 
 \paragraph{Standard Practice(tm)}
 In standard practice, the individual spectra $y_i$ are interpolated to rest-frame spectra $y'_i$ using an interpolator.
@@ -459,6 +459,7 @@ In Standard Practice(tm), this censorship of the bad pixels requires some attent
 Naive interpolation of an integer (binary actually) bad-pixel mask $b_i$ will not deliver an integer mask $b'_i$.
 The conservative move (which we adopt) is to naively interpolate $b_i$ (also by the cubic spline) and then zero out any pixels that are significantly below unity.
 In general this substantially grows the binary mask, and reduces the amount of data available for combination.
+\modified{We tested a version of standard practice by removing bad pixels prior to interpolation, and concluded that our more conservative approach did not introduce any additional large variance.}
 The non-conservative approach is just as bad: if we restrict the number (or fraction) of pixels in the combined spectrum to equal those in the individual epochs, we risk \modified{using} genuinely bad pixels while growing the binary mask elsewhere and \modified{marking good output pixels as bad}!
 
 \begin{figure}[t!]

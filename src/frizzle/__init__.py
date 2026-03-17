@@ -7,7 +7,7 @@ from typing import Optional
 from time import time
 
 from jax_finufft import nufft1, nufft2
-from .utils import check_inputs, combine_flags
+from .utils import check_inputs, combine_flags, get_modes
 
 def frizzle(
     λ_out: jnp.array,
@@ -24,45 +24,45 @@ def frizzle(
 
     :param λ_out:
         The wavelengths to sample the combined spectrum on.
-    
+
     :param λ:
         The wavelengths of the individual spectra. This should be shape (N, ) where N is the number of pixels.
-    
+
     :param flux:
         The flux values of the individual spectra. This should be shape (N, ).
-    
+
     :param ivar: [optional]
         The inverse variance of the individual spectra. This should be shape (N, ).
-    
+
     :param mask: [optional]
         The mask of the individual spectra. If given, this should be a boolean array (pixels with `True` get ignored) of shape (N, ).
         The mask is used to ignore pixel flux when combining spectra, but the mask is not used when computing combined pixel flags.
-    
+
     :param flags: [optional]
         An optional integer array of bitwise flags. If given, this should be shape (N, ).
-        
+
     :param censor_missing_regions: [optional]
         If `True`, then regions where there is no data will be set to NaN in the combined spectrum. If `False` the values evaluated
         from the model will be reported (and have correspondingly large uncertainties) but this will produce unphysical features.
 
     :param n_modes: [optional]
         The number of Fourier modes to use. If `None` is given then this will default to `len(λ_out)`.
-            
+
     :returns:
         A four-length tuple of ``(flux, ivar, flags, meta)`` where:
             - ``flux`` is the combined fluxes,
             - ``ivar`` is the variance of the combined fluxes,
-            - ``flags`` are the combined flags, and 
+            - ``flags`` are the combined flags, and
             - ``meta`` is a dictionary.
     """
 
     λ_out, λ, flux, ivar, mask = check_inputs(λ_out, λ, flux, ivar, mask)
 
     y_star, C_inv_star, meta = _frizzle_materialized(
-        λ_out, λ[~mask], flux[~mask], ivar[~mask], 
-        n_modes or min([len(λ_out), int(np.sum(~mask))]),
+        λ_out, λ[~mask], flux[~mask], ivar[~mask],
+        get_modes(n_modes, λ_out, mask),
     )
-    
+
     if censor_missing_regions:
         # Set NaNs for regions where there were NO data.
         # Here we check to see if the closest input value was more than the output pixel width.
@@ -106,7 +106,7 @@ def _frizzle_materialized(λ_out, λ, flux, ivar, n_modes):
 
     small = (λ_max - λ_min)/(1 + len(λ_out))
     scale = (1 - small) * 2 * jnp.pi / (λ_max - λ_min)
-    x = (λ - λ_min) * scale 
+    x = (λ - λ_min) * scale
     x_star = (λ_out - λ_min) * scale
     I = jnp.eye(n_modes)
 
@@ -114,19 +114,21 @@ def _frizzle_materialized(λ_out, λ, flux, ivar, n_modes):
     ATCinv = matmat(I, x, n_modes) * ivar
     ATCinvA = rmatmat(ATCinv, x, n_modes)
 
-    cho_factor = jax.scipy.linalg.cho_factor(ATCinvA)        
-    θ = jax.scipy.linalg.cho_solve(cho_factor, ATCinv @ flux)
+    #cho_factor = jax.scipy.linalg.cho_factor(ATCinvA)
+    #θ = jax.scipy.linalg.cho_solve(cho_factor, ATCinv @ flux)
+    θ = jax.scipy.linalg.solve(ATCinvA, ATCinv @ flux)
     y_star = matvec(θ, x_star, n_modes)
     t_combined_flux, t = (time() - t, time())
 
-    ATCinvA_inv = jax.scipy.linalg.cho_solve(cho_factor, I)
+    #ATCinvA_inv = jax.scipy.linalg.cho_solve(cho_factor, I)
+    ATCinvA_inv = jax.scipy.linalg.solve(ATCinvA, I)
     A_star_T = matmat(I, x_star, n_modes)
     C_inv_star = 1/jnp.diag(A_star_T.T @ ATCinvA_inv @ A_star_T)
     t_combined_ivar = time() - t
     meta = dict(
         timing=dict(
-            t_setup=t_setup, 
-            t_combined_flux=t_combined_flux, 
+            t_setup=t_setup,
+            t_combined_flux=t_combined_flux,
             t_combined_ivar=t_combined_ivar
         ),
     )
@@ -140,7 +142,7 @@ def _pre_matvec(c, p):
 
     :param c:
         The Fourier coefficients (real-valued).
-    
+
     :param p:
         The number of modes.
     """
@@ -154,4 +156,3 @@ def _pre_matvec(c, p):
 def _post_rmatvec(f, p):
     f_flat = f.flatten()
     return jnp.hstack([jnp.real(f_flat[:p//2+1]), jnp.imag(f_flat[-(p-p//2-1):])])
-
