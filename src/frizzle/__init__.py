@@ -109,12 +109,8 @@ def _frizzle(λ_out, λ, flux, ivar, n_modes):
     ATCinv = matmat(I, x, n_modes) * ivar
     ATCinvA = rmatmat(ATCinv, x, n_modes)
 
-    # It is tempting to use Cholesky, but in practice in adversarial examples
-    # ATCinvA could be ill-conditioned and lead to failures.
-    #cho_factor = jax.scipy.linalg.cho_factor(ATCinvA)
-    #θ = jax.scipy.linalg.cho_solve(cho_factor, ATCinv @ flux)
-    #ATCinvA_inv = jax.scipy.linalg.cho_solve(cho_factor, I)
-
+    # It is tempting to use Cholesky, but in adversarial examples ATCinvA could
+    # be made to be very ill-conditioned, leading to failures.
     θ = jax.scipy.linalg.solve(ATCinvA, ATCinv @ flux)
     y_star = matvec(θ, x_star, n_modes)
 
@@ -143,5 +139,15 @@ def _pre_matvec(c, p):
 
 @partial(jax.jit, static_argnames=("p",))
 def _post_rmatvec(f, p):
+    """
+    Extract the real-valued coefficient representation from Hermitian-symmetric
+    Fourier coefficients. This is the adjoint of :func:`_pre_matvec`.
+
+    :param f:
+        The complex Fourier coefficients.
+
+    :param p:
+        The number of modes.
+    """
     f_flat = f.flatten()
     return jnp.hstack([jnp.real(f_flat[:p//2+1]), jnp.imag(f_flat[-(p-p//2-1):])])
