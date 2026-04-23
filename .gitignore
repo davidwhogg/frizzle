@@ -1,2 +1,8 @@
 .??*
 *~
+
+*.fls
+*.fdb_latexmk
+*.fls
+*.egg-info/
+
