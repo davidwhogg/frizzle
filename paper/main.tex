@@ -275,7 +275,7 @@ Again, the assumption is that the different calibrated or processed observations
 Many of these effects can be accounted for in straightforward generalizations of what we deliver below.
 For example, if there are multiple signals participating, the model would have to expand into something like \textsl{wobble} (\citealt{wobble}).
 For another, if there are normalization variations, a normalization model can be added to the image combination procedure.
-That is, if different input spectra have different normalizations, the model for the combined spectrum can be multiplied by a normalization model, unique to each input spectrum, prior to evaluation of the likelihood \citep[e.g.,][]{Casey:2026}.
+\modified{That is, if different input spectra have different normalizations, the model for the combined spectrum can be multiplied by a normalization model, unique to each input spectrum, prior to evaluation of the likelihood \citep[e.g.,][]{Casey:2026}.}
 
 \paragraph{Flux or photon conservation}
 Some methods for image combination, like \texttt{Drizzle} \citep{drizzle}, have as a hard constraint that they conserve \emph{flux} or \emph{photons}.
@@ -617,7 +617,7 @@ The most important noise assumption made in all this is the zero-mean assumption
 
 \modified{We also assumed that there are $N > 1$ epochs, but in practice this is not always true. When there is only one epoch, \name\ still has utility, albeit limited. If there are no bad pixels then the number of modes $M_\star$ is equal to the number of input pixels $M$. In this case, the forward model is just a change of basis, and the output spectrum is just a re-representation of the input spectrum. If there are bad pixels, then the number of modes $M_\star$ is less than the number of input pixels $M$, which can cause the output spectrum to have high-frequency ringing. Usually these ringing artifacts are merely cosmetic, in that the covariance matrix $C_\star$ has large variances at the pixels affected by ringing, but such scenarios dance on the edge of numerical stability.}
 
-All code used for this project is available at \url{https://github.com/davidwhogg/NoDataInterpolation} \modified{and is registered in the Python Package Index as \texttt{frizzle}}. \modified{This repository also includes code for generating the fake data sets, and for performing the experiments described above, as well as additional experiments thoughtfully requested during the review process.}
+All code used for this project is available at \url{https://github.com/davidwhogg/frizzle} \modified{and is registered in the Python Package Index as \texttt{frizzle}}. \modified{This repository also includes code for generating the fake data sets, and for performing the experiments described above, as well as additional experiments thoughtfully requested during the review process.}
 
 \paragraph{Software}
 \texttt{numpy} \citep{numpy} ---
@@ -637,7 +637,8 @@ It is a pleasure to thank \modified{the anonymous referee for their detailed rev
     Jon Holtzman (NMSU),
     Dustin Lang (Perimeter),
     Adrian Price-Whelan (Flatiron),
-and the Astronomical Data Group at the Flatiron Institute
+    the Astronomical Data Group at the Flatiron Institute,
+    and the Inference Group at Monash University
 for valuable discussions and input.
 The Flatiron Institute is a division of the Simons Foundation.
 \end{acknowledgments}
