@@ -145,7 +145,7 @@ For another, the \textsl{DESI} survey ensures that all spectra are extracted on 
 What we propose below is actually a sub-problem of the problem solved by the \textsl{wobble} method for determining stellar radial velocities (\citealt{wobble}); \textsl{wobble} is more general because it also includes a tellurics model and also tellurics and stellar variability models,
 plus it learns (it isn't told) the epoch-to-epoch spectral shifts.
 There is a heritage for what's presented here in the ``optimal extraction'' literature (for example, \citealt{oe}, \citealt{kelson}, \citealt{froe}, \citealt{sp}):
-Optimal extraction describes a process of extracting a one-dimensional spectral signal from a two-dimensional spectrograph image when that extraction proceeds by forward modeling the two-dimensional data.\footnote{Forward modeling refers to predicting data given some model parameters. Inverse modeling describes the process of inferring some model parameters given some data.}
+Optimal extraction describes a process of extracting a one-dimensional spectral signal from a two-dimensional spectrograph image when that extraction proceeds by forward modeling the two-dimensional data.\footnote{Forward modeling is the prediction of data given some model parameters. Inverse modeling is the process of inferring some model parameters given some data.}
 One amusing point, which is out of scope here, is that if the data that are being combined are extracted one-dimensional spectra, and those are, in turn, optimal extractions, then there is almost certainly an even better method that moves this spectral combination method directly into the two-dimensional data; that is, there ought to be a method that obviates one-dimensional spectral extraction entirely.
 We hope for a future in which one-dimensional spectra are never extracted from two-dimensional images; in this future the two-dimensional data will be the sacred data, not the extractions.
 
@@ -317,7 +317,7 @@ Another sensible default choice \modified{for photon noise-limited observations}
 That is, you do not need to know the noise variances accurately (or even at all) to execute the forthcoming procedure; but if you do know them, it is good to use them.
 
 If you additionally have a bad-pixel mask \modified{$\mathbf{b}_i$} associated with each observation \modified{$\mathbf{y}_i$}, the bad-pixel mask can be used simply to zero out the corresponding bad rows and columns of the inverse covariance matrix $C_i^{-1}$.
-Importantly, the bad data get zeros in the \emph{inverse} covariance matrix, not the covariance matrix!
+Importantly, the bad data get zeros in the \emph{inverse} covariance matrix, not the covariance matrix.
 
 Because we are often dealing with a spectrograph with a (fairly) well defined spectral resolution ($\delta\lambda/\lambda$ roughly constant), and because we care a lot about Doppler shifts (which are uniform in log wavelength), it makes sense to think of the pixel positions \modified{$\mathbf{x}_i$} and shifts \modified{$\Delta\mathbf{x}_i$} as being in log-wavelength (or ln-wavelength) units.
 Indeed, the \textsl{Sloan Digital Sky Survey} family of spectrographs extract one-dimensional spectra on a uniform-in-log-wavelength basis.
@@ -411,7 +411,7 @@ We demonstrate the effectiveness of \name{}---the spectral combination method by
 The spectral data were generated from a mean spectral expectation that is a continuum plus a randomly generated line list, where each line equivalent width was set by a random draw from a power law.
 \modified{We arbitrarily assumed a mean density (Poisson rate) of 2$\times{}10^4$ spectral lines per unit in $x$ (natural logarithm of wavelength).}
 This line formation model is unphysical, but it is sufficient for our purposes in that it generates fake data that look like stellar spectra.
-Each spectral epoch was given a velocity (Doppler shift) by putting the epochs equally spaced on a sinusoidal variation with a semi-amplitude of $30\,\kmps$ (to emulate the motion of the spectrograph with respect to the Solar System barycenter). \modified{The toy data set only constructed once, without adjustment: no tuning or selection was performed in order to make the data more or less favorable to a given method.} \modified{Because the shifts in this demonstration are pure Doppler shifts, $\Delta x_{i,k}$ is constant in $k$ for each epoch $i$.}
+Each spectral epoch was given a velocity (Doppler shift) by putting the epochs equally spaced on a sinusoidal variation with a semi-amplitude of $30\,\kmps$ (to emulate the motion of the spectrograph with respect to the Solar System barycenter). \modified{The toy data set was only constructed once, without adjustment: no tuning or selection was performed in order to make the data more or less favorable to a given method.} \modified{Because the shifts in this demonstration are pure Doppler shifts, $\Delta x_{i,k}$ is constant in $k$ for each epoch $i$.}
 The spectral expectation model is built on the assumption of a normalized (unit) continuum and unresolved spectral lines with a Gaussian line-spread function (LSF) with one-sigma width $1/R$, where $R=135\,000$ is the spectrograph resolution.
 
 
@@ -475,7 +475,7 @@ Naive interpolation of an integer (binary actually) bad-pixel mask \modified{$\m
 The conservative move is to naively interpolate \modified{$\mathbf{b}_i$} (e.g., by a cubic spline) and then zero out any pixels that are significantly below unity.
 In general this substantially grows the binary mask, and reduces the amount of data available for combination.
 %\modified{We tested a version of Standard Practice by removing bad pixels prior to interpolation, and concluded that our more conservative approach did not introduce any additional large variance.}
-The non-conservative approach is just as bad: if we restrict the number (or fraction) of pixels in the combined spectrum to equal those in the individual epochs, we risk \modified{using} genuinely bad pixels while growing the binary mask elsewhere and \modified{marking good output pixels as bad}!
+The non-conservative approach is just as bad: if we restrict the number (or fraction) of pixels in the combined spectrum to equal those in the individual epochs, we risk \modified{using} genuinely bad pixels while growing the binary mask elsewhere and \modified{marking good output pixels as bad}.
 
 \begin{figure}[t!]
     \begin{mdframed}\begin{center}
@@ -562,7 +562,7 @@ Perhaps the strongest assumption is that the spectrum or image is not a function
 That is, each epoch spectrum or image is a sampling of the same underlying, true signal.
 This assumption can be wrong for a myriad of reasons:
 The source can vary, the instrument can vary, there can be variable foregrounds or backgrounds, and there can be mistakes or variations in calibration or data processing.
-All of these things happen in real data sets, but \name{} is no more impacted by this than Standard Practice(tm)!
+All of these things happen in real data sets, but \name{} is no more impacted by this than Standard Practice(tm).
 
 There are (at least) three attitudes for an investigator to take in the face of variations in the data, from epoch to epoch or exposure to exposure:
 The first is that the procedures we design are designed to deliver the exposure (or signal-to-noise-squared) weighted mean of the observed epochs.
