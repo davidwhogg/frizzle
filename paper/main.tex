@@ -474,7 +474,7 @@ In Standard Practice(tm) \modified{and in \name}, this censorship of the bad pix
 Naive interpolation of an integer (binary actually) bad-pixel mask \modified{$\mathbf{b}_i$} will not deliver an integer mask \modified{$\mathbf{b}'_i$}.
 The conservative move is to naively interpolate \modified{$\mathbf{b}_i$} (e.g., by a cubic spline) and then zero out any pixels that are significantly below unity.
 In general this substantially grows the binary mask, and reduces the amount of data available for combination.
-%\modified{We tested a version of Standard Practice by removing bad pixels prior to interpolation, and concluded that our more conservative approach did not introduce any additional large variance.}
+\modified{We tested a version of Standard Practice by removing bad pixels prior to interpolation, and concluded that our more conservative approach did not introduce any additional large variance.}
 The non-conservative approach is just as bad: if we restrict the number (or fraction) of pixels in the combined spectrum to equal those in the individual epochs, we risk \modified{using} genuinely bad pixels while growing the binary mask elsewhere and \modified{marking good output pixels as bad}!
 
 \begin{figure}[t!]
