@@ -3,19 +3,16 @@ on:
   push:
     tags:
       - '*.*.*'
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Create a Release
-      uses: elgohr/Github-Release-Action@v5
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        title: ${{ github.ref_name }}
-        body: |
-          # What's Changed
-          - ...
-        draft: true
-        
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --generate-notes --draft
