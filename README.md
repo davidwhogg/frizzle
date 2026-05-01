@@ -19,8 +19,12 @@ uv add frizzle
 
 # Getting Started
 
-Combine eight Doppler-shifted spectra of the same source onto a common
-output grid:
+You should see [the documentation](https://frizzle.readthedocs.io) for a
+worked example with plots, the most useful keyword arguments, and for
+why forward modeling beats interpolation.
+
+If you want a quick crash course, here we will combine eight 
+Doppler-shifted spectra of the same source onto a common output grid:
 
 ```python
 import numpy as np
@@ -48,19 +52,6 @@ mask = ~np.hstack(bs).astype(bool)         # True = drop this pixel
 y_star, C_star, flags, meta = frizzle(λ_out, λ, flux, ivar, mask)
 ```
 
-See the [documentation](https://frizzle.readthedocs.io/) for a worked
-example with plots, the most useful kwargs, and why forward modeling
-beats interpolation.
-
 # Authors
 - **David W Hogg** (NYU) (MPIA) (Flatiron)
 - **Andy Casey** (Monash) (Flatiron)
-
-
-With contributions from:
-- **Matt Daunt** (NYU);
-- **Thomas Hilder** (Monash);
-- **Adrian Price-Whelan** (Flatiron);
-- the **Astronomical Data Group** at the Flatiron Institute; and 
-- the **Inference Group** at Monash University.
-
