@@ -4,14 +4,15 @@
 
 Combine spectra by forward modeling [(Hogg & Casey, 20xx)](https://arxiv.org/abs/2403.11011).
 
-[![Test Status](https://github.com/andycasey/frizzle/actions/workflows/ci.yml/badge.svg)](https://github.com/andycasey/frizzle/actions/workflows/ci.yml)
-[![Coverage Status](https://coveralls.io/repos/github/andycasey/frizzle/badge.svg?branch=main&service=github)](https://coveralls.io/github/andycasey/frizzle?branch=main)
+[![Test Status](https://github.com/davidwhogg/frizzle/actions/workflows/ci.yml/badge.svg)](https://github.com/davidwhogg/frizzle/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/davidwhogg/frizzle/badge.svg?branch=main&service=github)](https://coveralls.io/github/davidwhogg/frizzle?branch=main)
 [![Documentation Status](https://readthedocs.org/projects/frizzle/badge/?version=latest)](https://frizzle.readthedocs.io/en/latest/?badge=latest)
 
 </div>
 
 # Install
 
+To get frizzy wit it:
 ```
 uv add frizzle
 ```
