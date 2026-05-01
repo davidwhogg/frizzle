@@ -6,3 +6,5 @@
 *.fls
 *.egg-info/
 
+docs/_build/
+.gitignore

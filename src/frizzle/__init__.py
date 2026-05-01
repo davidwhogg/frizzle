@@ -24,24 +24,26 @@ def frizzle(
         The wavelengths to sample the combined spectrum on.
 
     :param λ:
-        The wavelengths of the individual spectra. This should be shape (N, ) where N is the number of pixels.
+        An N-length array of wavelength values (the wavelengths of individual pixels).
 
     :param flux:
-        The flux values of the individual spectra. This should be shape (N, ).
+        An N-length array of input flux values.
 
     :param ivar: [optional]
-        The inverse variance of the individual spectra. This should be shape (N, ).
+        An N-length array of inverse variances.
 
     :param mask: [optional]
-        The mask of the individual spectra. If given, this should be a boolean array (pixels with `True` get ignored) of shape (N, ).
-        The mask is used to ignore pixel flux when combining spectra, but the mask is not used when computing combined pixel flags.
+        A boolean mask of which pixels to use when combining spectra (pixels with mask `True` get
+        ignored). The mask is used to ignore pixel values when combining spectra, but the mask is
+        not used when computing combined pixel flags.
 
     :param flags: [optional]
         An optional integer array of bitwise flags. If given, this should be shape (N, ).
 
     :param censor_missing_regions: [optional]
-        If `True`, then regions where there is no data will be set to NaN in the combined spectrum. If `False` the values evaluated
-        from the model will be reported (and have correspondingly large uncertainties) but this will produce unphysical features.
+        If `True`, then regions where there is no data will be set to NaN in the combined spectrum.
+        If `False` the values evaluated from the model will be reported (and have correspondingly
+        large uncertainties) but this will produce unphysical features.
 
     :param n_modes: [optional]
         The number of Fourier modes to use. If `None` is given then this will default to `len(λ_out)`.
@@ -52,6 +54,9 @@ def frizzle(
             - ``C_star`` is the covariance of the combined fluxes,
             - ``flags`` are the combined flags, and
             - ``meta`` is a dictionary.
+
+        Note that the input expects inverse variance `ivar`, but the output returns `C_star`, the
+        covariance of the combined fluxes.
     """
 
     λ_out, λ, flux, ivar, mask = check_inputs(λ_out, λ, flux, ivar, mask)

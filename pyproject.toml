@@ -1,6 +1,6 @@
 [project]
 name = "frizzle"
-version = "0.2.3"
+version = "0.2.4"
 readme = "README.md"
 license = {text = "LICENSE.md"}
 description = "Combine spectra by forward modelling"
@@ -17,7 +17,6 @@ dependencies = [
   "scipy",
   "scikit-learn",
   "jax-finufft",
-  "lineax"
 ]
 requires-python = ">= 3.11"
 
@@ -42,4 +41,10 @@ dev = [
   "coveralls",
   "ipython",
   "matplotlib"
+]
+docs = [
+  "sphinx",
+  "furo",
+  "matplotlib",
+  "sphinx-copybutton",
 ]
